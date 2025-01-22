@@ -6,10 +6,6 @@
   max-width: 300px;
 }
 
-table, th, td {
-  border:1px solid black;
-}
-
 .user_table:nth-child(odd){
   background-color: rgb(232, 232, 232);
 }

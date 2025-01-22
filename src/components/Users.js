@@ -9,6 +9,18 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
+const FixedWidthCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  width: "200px",
+  height: "40px",
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+}));
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -41,27 +53,27 @@ function Users({ users, onDelete, onEdit }) {
         <TableHead>
           <TableRow>
             <StyledTableCell>Num</StyledTableCell>
-            <StyledTableCell align="right">Name</StyledTableCell>
-            <StyledTableCell align="right">Email</StyledTableCell>
+            <FixedWidthCell align="right">Name</FixedWidthCell>
+            <FixedWidthCell align="right">Email</FixedWidthCell>
             <StyledTableCell align="right">Edit</StyledTableCell>
             <StyledTableCell align="right">Delete</StyledTableCell>
           </TableRow>
         </TableHead>
 
-        <TableBody >
+        <TableBody className="table_body">
           {users.map((user, index) => (
-            <TableRow key={user.id} className="user_table">
-              <TableCell component="th">{index + 1}</TableCell>
-              <TableCell align="right">
+            <TableRow key={user.id} className="user_table_row">
+              <TableCell className="user_table_elem" component="th">{index + 1}</TableCell>
+              <FixedWidthCell align="right">
                 {editingId === user.id ? (
                   <TextField size="small" id="outlined-required" type="text" value={editingUser.name} onChange={(e) => setEditingUser({ ...editingUser, name: e.target.value })} />
                 ) : <div>{user.name}</div>}
-              </TableCell>
-              <TableCell align="right">
+              </FixedWidthCell>
+              <FixedWidthCell align="right">
                 {editingId === user.id ? (
                   <TextField size="small" id="outlined-required" type="text" value={editingUser.email} onChange={(e) => setEditingUser({ ...editingUser, email: e.target.value })} />
                 ) : <div>{user.email}</div>}
-              </TableCell>
+              </FixedWidthCell>
               <TableCell align="right">
                 {editingId === user.id ? (
                   <Button size="small" variant="contained" color="success" onClick={() => saveChanges(user.id)}>Save</Button>
