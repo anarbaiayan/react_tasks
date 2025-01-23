@@ -1,4 +1,9 @@
-.add-user{
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.add-user {
   margin-top: 10px;
   display: flex;
   flex-direction: column;
@@ -6,10 +11,42 @@
   max-width: 300px;
 }
 
-.user_table:nth-child(odd){
-  background-color: rgb(232, 232, 232);
+.add_user {
+  margin-top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.add_user{
-  margin-top: 50px;
+.add_user__modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.add_user__button {
+  display: flex;
+  column-gap: 40px;
+}
+
+.name_error_msg {
+  color: red;
+  font-size: 12px;
+  display: none;
+  margin: 0;
+  position: absolute;
+  top: 15px;
+  left: 95px;
+}
+
+.email_error_msg {
+  color: red;
+  font-size: 12px;
+  display: none;
+  margin: 0;
+  position: absolute;
+  top: 75px;
+  left: 95px;
 }
