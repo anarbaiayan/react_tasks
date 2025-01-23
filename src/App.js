@@ -27,14 +27,15 @@ function App() {
 
   return (
     <div>
+      <div>
+        <AddUser onAdd={addUser} />
+      </div>
       
       <main>
         <Users users={users} onDelete={deleteUser} onEdit={editUser}/>
       </main>
 
-      <div>
-        <AddUser onAdd={addUser} />
-      </div>
+      
     </div>
   );
 }
