@@ -1,4 +1,4 @@
-function MyButton({ bgcolor, color, text, onClick, icon, fontSize }) {
+function MyButton({ bgcolor, color, text, onClick, icon, fontSize, type }) {
   const buttonStyles = {
     backgroundColor: bgcolor || 'blue',
     color: color || 'white',
@@ -10,7 +10,7 @@ function MyButton({ bgcolor, color, text, onClick, icon, fontSize }) {
   };
 
   return (
-    <button onClick={onClick} style={buttonStyles}>
+    <button type={type} onClick={onClick} style={buttonStyles}>
       {icon && icon} {text}
     </button>
   );
