@@ -21,9 +21,6 @@ const style = {
 function AddUser({ onAdd }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const formik = useFormik({
     initialValues: {
@@ -41,6 +38,7 @@ function AddUser({ onAdd }) {
     }),
     onSubmit: values => {
       onAdd(values);
+      setOpen(false);
     }
   });
 
@@ -81,7 +79,7 @@ function AddUser({ onAdd }) {
             </div>
             <div className="add_user__button">
               <MyButton bgcolor="green" color="white" text="Add" type="submit" />
-              <MyButton text="Close" onClick={handleClose} />
+              <MyButton text="Close" />
             </div>
           </form>
         </Box>
