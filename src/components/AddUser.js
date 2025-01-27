@@ -17,9 +17,7 @@ const style = {
 };
 
 function AddUser({ onAdd }) {
-  const [nameErrorMsg, setNameErrorMsg] = useState('none')
-  const [emailErrorMsg, setEmailErrorMsg] = useState('none')
-
+  const [errors, setErrors] = useState({ name: false, email: false });
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
 
@@ -27,43 +25,39 @@ function AddUser({ onAdd }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
-    setName('')
-    setEmail('')
-    setEmailErrorMsg('none')
-    setNameErrorMsg('none')
-  }
+    setName('');
+    setEmail('');
+    setErrors({ name: false, email: false });
+  };
 
-  const nameErrorStyle = {
-    display: nameErrorMsg
-  }
+  const validateFields = () => {
+    let isValid = true;
+    const newErrors = { name: false, email: false };
 
-  const emailErrorStyle = {
-    display: emailErrorMsg
-  }
+    if (!name.trim()) {
+      newErrors.name = true;
+      isValid = false;
+    }
 
-  const handleEmail = () => {
-    setEmailErrorMsg('block')
-  }
+    const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!emailRegex.test(email.trim())) {
+      newErrors.email = true;
+      isValid = false;
+    }
 
-  const handleName = () => {
-    setNameErrorMsg('block')
-  }
+    setErrors(newErrors);
+    return isValid;
+  };
 
   const handleAdd = () => {
-    let re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!name) {
-      handleName()
-    } else if (name && re.test(email)) {
-      onAdd({ name, email })
-      setName('')
-      setEmail('')
-      setEmailErrorMsg('none')
-      setNameErrorMsg('none')
-      setOpen(false)
-    } else {
-      handleEmail()
+    if (validateFields()) {
+      onAdd({ name, email });
+      setName('');
+      setEmail('');
+      setErrors({ name: false, email: false });
+      setOpen(false);
     }
-  }
+  };
 
   return (
     <div className="add_user">
@@ -72,10 +66,26 @@ function AddUser({ onAdd }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
         <Box sx={style} className="add_user__modal">
-          <p style={nameErrorStyle} className="name_error_msg">Please, enter name</p>
-          <TextField size="small" id="outlined-required" placeholder="Name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
-          <p style={emailErrorStyle} className="email_error_msg">Please, enter a valid email</p>
-          <TextField size="small" id="outlined-required" placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <TextField
+            size="small"
+            id="outlined-required"
+            placeholder="Name"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            error={errors.name}
+            helperText={errors.name ? "Please, enter a name" : ""}
+          />
+          <TextField
+            size="small"
+            id="outlined-required"
+            placeholder="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            error={errors.email}
+            helperText={errors.email ? "Please, enter a valid email" : ""}
+          />
           <div className="add_user__button">
             <MyButton bgcolor="green" color="white" text="Add" onClick={handleAdd} />
             <MyButton text="Close" onClick={handleClose} />
@@ -85,8 +95,7 @@ function AddUser({ onAdd }) {
 
       <MyButton text="Add" onClick={handleOpen} />
     </div>
-
-  )
+  );
 }
 
-export default AddUser
+export default AddUser;
