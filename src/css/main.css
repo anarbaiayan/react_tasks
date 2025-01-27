@@ -21,9 +21,9 @@
 .add_user__modal {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
-  gap: 20px;
+  height: 250px;
 }
 
 .add_user__button {
@@ -31,22 +31,6 @@
   column-gap: 40px;
 }
 
-.name_error_msg {
+.add_user__modal p{
   color: red;
-  font-size: 12px;
-  display: none;
-  margin: 0;
-  position: absolute;
-  top: 15px;
-  left: 95px;
-}
-
-.email_error_msg {
-  color: red;
-  font-size: 12px;
-  display: none;
-  margin: 0;
-  position: absolute;
-  top: 75px;
-  left: 95px;
 }

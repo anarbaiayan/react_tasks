@@ -53,30 +53,34 @@ function AddUser({ onAdd }) {
         aria-describedby="modal-modal-description">
         <Box sx={style} >
           <form className="add_user__modal" onSubmit={formik.handleSubmit}>
-            <TextField
-              size="small"
-              id="outlined-required"
-              placeholder="Name"
-              type="text"
-              name="name"
-              onChange={formik.handleChange}
-            />
-            {formik.errors.name && formik.touched.name && (
-              <p>{formik.errors.name}</p>
-            )}
-            <TextField
-              size="small"
-              id="outlined-required"
-              placeholder="Email"
-              type="text"
-              name="email"
-              onChange={formik.handleChange}
-            />
-            {formik.errors.email && formik.touched.email && (
-              <p>{formik.errors.email}</p>
-            )}
+            <div>
+              <TextField
+                size="small"
+                id="outlined-required"
+                placeholder="Name"
+                type="text"
+                name="name"
+                onChange={formik.handleChange}
+              />
+              {formik.errors.name && formik.touched.name && (
+                <p>{formik.errors.name}</p>
+              )}
+            </div>
+            <div>
+              <TextField
+                size="small"
+                id="outlined-required"
+                placeholder="Email"
+                type="text"
+                name="email"
+                onChange={formik.handleChange}
+              />
+              {formik.errors.email && formik.touched.email && (
+                <p>{formik.errors.email}</p>
+              )}
+            </div>
             <div className="add_user__button">
-              <MyButton bgcolor="green" color="white" text="Add" type="submit"/>
+              <MyButton bgcolor="green" color="white" text="Add" type="submit" />
               <MyButton text="Close" onClick={handleClose} />
             </div>
           </form>
