@@ -5,6 +5,8 @@ import Box from '@mui/material/Box';
 import MyButton from "../UI/myButton";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { AnimatePresence } from "motion/react";
+import * as motion from "motion/react-client";
 
 const style = {
   position: 'absolute',
@@ -21,6 +23,7 @@ const style = {
 function AddUser({ onAdd }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const formik = useFormik({
     initialValues: {
@@ -46,44 +49,54 @@ function AddUser({ onAdd }) {
   return (
     <div className="add_user">
       <h2>User Table</h2>
-      <Modal open={open}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description">
-        <Box sx={style} >
-          <form className="add_user__modal" onSubmit={formik.handleSubmit}>
-            <div>
-              <TextField
-                size="small"
-                id="outlined-required"
-                placeholder="Name"
-                type="text"
-                name="name"
-                onChange={formik.handleChange}
-              />
-              {formik.errors.name && formik.touched.name && (
-                <p>{formik.errors.name}</p>
-              )}
-            </div>
-            <div>
-              <TextField
-                size="small"
-                id="outlined-required"
-                placeholder="Email"
-                type="text"
-                name="email"
-                onChange={formik.handleChange}
-              />
-              {formik.errors.email && formik.touched.email && (
-                <p>{formik.errors.email}</p>
-              )}
-            </div>
-            <div className="add_user__button">
-              <MyButton bgcolor="green" color="white" text="Add" type="submit" />
-              <MyButton text="Close" />
-            </div>
-          </form>
-        </Box>
-      </Modal>
+      <AnimatePresence initial={false}>
+        {open ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0 }}
+          >
+            <Modal open={open}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description">
+              <Box sx={style} >
+                <form className="add_user__modal" onSubmit={formik.handleSubmit}>
+                  <div>
+                    <TextField
+                      size="small"
+                      id="outlined-required"
+                      placeholder="Name"
+                      type="text"
+                      name="name"
+                      onChange={formik.handleChange}
+                    />
+                    {formik.errors.name && formik.touched.name && (
+                      <p>{formik.errors.name}</p>
+                    )}
+                  </div>
+                  <div>
+                    <TextField
+                      size="small"
+                      id="outlined-required"
+                      placeholder="Email"
+                      type="text"
+                      name="email"
+                      onChange={formik.handleChange}
+                    />
+                    {formik.errors.email && formik.touched.email && (
+                      <p>{formik.errors.email}</p>
+                    )}
+                  </div>
+                  <div className="add_user__button">
+                    <MyButton bgcolor="green" color="white" text="Add" type="submit" />
+                    <MyButton type="button" text="Close" onClick={handleClose} />
+                  </div>
+                </form>
+              </Box>
+            </Modal>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
 
       <MyButton text="Add" onClick={handleOpen} />
     </div>

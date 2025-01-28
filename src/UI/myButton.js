@@ -1,3 +1,5 @@
+import * as motion from "motion/react-client"
+
 function MyButton({ bgcolor, color, text, onClick, icon, fontSize, type }) {
   const buttonStyles = {
     backgroundColor: bgcolor || 'blue',
@@ -10,9 +12,12 @@ function MyButton({ bgcolor, color, text, onClick, icon, fontSize, type }) {
   };
 
   return (
-    <button type={type} onClick={onClick} style={buttonStyles}>
+    <motion.button
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.95 }}
+      type={type} onClick={onClick} style={buttonStyles}>
       {icon && icon} {text}
-    </button>
+    </motion.button>
   );
 }
 

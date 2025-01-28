@@ -33,9 +33,7 @@ function App() {
       
       <main>
         <Users users={users} onDelete={deleteUser} onEdit={editUser}/>
-      </main>
-
-      
+      </main>      
     </div>
   );
 }
