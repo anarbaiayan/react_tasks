@@ -47,7 +47,7 @@ function AddUser({ onAdd }) {
 
 
   return (
-    <div className="add_user">
+    <div className="add_user container">
       <h2>User Table</h2>
       <AnimatePresence initial={false}>
         {open ? (

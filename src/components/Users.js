@@ -47,7 +47,7 @@ function Users({ users, onDelete, onEdit }) {
   }
 
   return (
-    <div>
+    <div className="container" >
       <Table sx={{ minWidth: 900 }} aria-label="customized table">
         <TableHead>
           <TableRow>
