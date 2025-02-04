@@ -14,7 +14,7 @@ const FixedWidthCell = styled(TableCell)(({ theme }) => ({
     backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
   },
-  width: "200px",
+  width: "300px",
   height: "40px",
   whiteSpace: "nowrap",
   overflow: "hidden",
@@ -47,14 +47,14 @@ function Users({ users, onDelete, onEdit }) {
   }
 
   return (
-    <div className="container" >
+    <div>
       <Table sx={{ minWidth: 900 }} aria-label="customized table">
         <TableHead>
           <TableRow>
             <StyledTableCell>Num</StyledTableCell>
             <FixedWidthCell align="right">Name</FixedWidthCell>
             <FixedWidthCell align="right">Email</FixedWidthCell>
-            <StyledTableCell align="right">Edit</StyledTableCell>
+            <FixedWidthCell align="right">Edit</FixedWidthCell>
             <StyledTableCell align="right">Delete</StyledTableCell>
           </TableRow>
         </TableHead>

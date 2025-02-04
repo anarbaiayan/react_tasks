@@ -2,8 +2,10 @@ import Button from "../UI/myButton"
 import Register from "./Register"
 import LogIn from "./LogIn"
 import React, { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 
-function Header({ setLoggedIn, loggedIn }) {
+function Header({ userData, setUserData, setLoggedIn, loggedIn, setCurrentUser }) {
+  const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -12,11 +14,6 @@ function Header({ setLoggedIn, loggedIn }) {
   const [openLogin, setOpenLogin] = useState(false);
   const handleOpenLogin = () => setOpenLogin(true);
   const handleCloseLogin = () => setOpenLogin(false);
-
-  const [userData, setUserData] = useState([
-    { email: "test@mail.ru", password: '12345678' },
-    { email: "test2@mail.ru", password: '11111111' }
-  ]);
 
   const [error, setError] = useState("");
   const [showErrorNotification, setShowErrorNotification] = useState(false);
@@ -57,6 +54,8 @@ function Header({ setLoggedIn, loggedIn }) {
       setTimeout(() => setShowSuccessNotification(false), 3000);
       handleCloseLogin()
       setLoggedIn(true)
+      setCurrentUser(existingUser);
+      navigate('/profile', { replace: true })
     }
   }
 
@@ -65,6 +64,7 @@ function Header({ setLoggedIn, loggedIn }) {
     setSuccess("You logged out successfully");
     setShowSuccessNotification(true);
     setTimeout(() => setShowSuccessNotification(false), 3000);
+    navigate('/', { replace: true })
   }
 
 
@@ -73,10 +73,21 @@ function Header({ setLoggedIn, loggedIn }) {
       <header>
         <p>Company</p>
 
-        {loggedIn ? <Button margin="20px" text="Log out" onClick={handleLogout} /> :
+        {loggedIn ?
+          <ul>
+            <NavLink to='/'><li>Home</li></NavLink>
+            <NavLink to='/profile'><li>Profile</li></NavLink>
+            <NavLink to='userTable'><li>User Table</li></NavLink>
+          </ul>
+        : ''  
+    }
+
+
+
+        {loggedIn ? <Button className='reg_btn' borderRadius='30px' bgcolor='black' margin="20px" text="Log out" onClick={handleLogout} /> :
           <div>
-            <Button margin="20px" text="Log In" onClick={handleOpenLogin} />
-            <Button margin="20px" text="Register" onClick={handleOpen} />
+            <Button className='reg_btn' borderRadius='30px' bgcolor='black' margin="20px" text="Log In" onClick={handleOpenLogin} />
+            <Button className='reg_btn' borderRadius='30px' bgcolor='black' margin="20px" text="Register" onClick={handleOpen} />
           </div>
         }
 

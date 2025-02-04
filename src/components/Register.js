@@ -17,6 +17,10 @@ function Register({ open, onClose, onRegister }) {
       confirm_password: ""
     },
     validationSchema: Yup.object({
+      name: Yup.string()
+        .min(2, "Minimum 2 characters")
+        .max(15, "Maximum 15 characters")
+        .required("Required!"),
       email: Yup.string()
         .email("Invalid email format")
         .required("Required!"),
@@ -64,6 +68,13 @@ function Register({ open, onClose, onRegister }) {
           <Box sx={style}>
             <form className="registerForm" onSubmit={formik.handleSubmit}>
               <p>Registration</p>
+              <div>
+                <TextField id="outlined-basic" label="Name" variant="outlined" name='name'
+                  onChange={formik.handleChange} />
+                {formik.errors.name && formik.touched.name && (
+                  <p>{formik.errors.name}</p>
+                )}  
+              </div>
               <div>
                 <TextField id="outlined-basic" label="Email" variant="outlined" name='email'
                   onChange={formik.handleChange} />
