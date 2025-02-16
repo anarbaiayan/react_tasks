@@ -1,10 +1,10 @@
-import Button from "../UI/myButton"
+import Button from "../../UI/myButton"
 import Register from "./Register"
 import LogIn from "./LogIn"
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
-function Header({ userData, setUserData, setLoggedIn, loggedIn, setCurrentUser }) {
+function Header({ userData, setUserData, setLoggedIn, loggedIn, setCurrentUser, currentUser }) {
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
@@ -56,6 +56,7 @@ function Header({ userData, setUserData, setLoggedIn, loggedIn, setCurrentUser }
       setLoggedIn(true)
       setCurrentUser(existingUser);
       navigate('/profile', { replace: true })
+      console.log(userData)
     }
   }
 
@@ -78,9 +79,11 @@ function Header({ userData, setUserData, setLoggedIn, loggedIn, setCurrentUser }
             <NavLink to='/'><li>Home</li></NavLink>
             <NavLink to='/profile'><li>Profile</li></NavLink>
             <NavLink to='userTable'><li>User Table</li></NavLink>
+            {currentUser.role === 'admin' ? <NavLink to='adminPanel'><li>Admin Panel</li></NavLink> : ''}
+
           </ul>
-        : ''  
-    }
+          : ''
+        }
 
 
 
@@ -105,7 +108,7 @@ function Header({ userData, setUserData, setLoggedIn, loggedIn, setCurrentUser }
         </div>
       )}
 
-      <Register open={open} onClose={handleClose} onRegister={handleRegister} />
+      <Register userData={userData} open={open} onClose={handleClose} onRegister={handleRegister} />
       <LogIn openLogin={openLogin} onClose={handleCloseLogin} onLogin={handleLogin} />
     </>
   )

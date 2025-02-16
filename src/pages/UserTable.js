@@ -1,5 +1,5 @@
-import AddUser from '../components/AddUser'
-import Users from '../components/Users'
+import AddUser from '../components/UserTable/AddUser'
+import Users from '../components/UserTable/Users'
 import React, { useState } from "react";
 
 const UserTable = () => {

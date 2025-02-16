@@ -1,6 +1,6 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
-import Button from "../UI/myButton"
+import Button from "../../UI/myButton"
 import Modal from '@mui/material/Modal';
 import Backdrop from '@mui/material/Backdrop';
 import Fade from '@mui/material/Fade';
@@ -8,34 +8,24 @@ import Box from '@mui/material/Box';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-function Register({ open, onClose, onRegister }) {
-
+function LogIn({openLogin, onClose, onLogin}) {
   const formik = useFormik({
     initialValues: {
       email: "",
-      password: "",
-      confirm_password: ""
+      password: ""
     },
     validationSchema: Yup.object({
-      name: Yup.string()
-        .min(2, "Minimum 2 characters")
-        .max(15, "Maximum 15 characters")
-        .required("Required!"),
       email: Yup.string()
         .email("Invalid email format")
         .required("Required!"),
       password: Yup.string()
         .min(8, "Minimum 8 characters")
-        .required("Required!"),
-      confirm_password: Yup.string()
-        .oneOf([Yup.ref("password")], "Password's not match")
         .required("Required!")
     }),
     onSubmit: values => {
-      onRegister(values);
+      onLogin(values);
     }
   });
-
 
   const style = {
     position: 'absolute',
@@ -54,7 +44,7 @@ function Register({ open, onClose, onRegister }) {
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        open={open}
+        open={openLogin}
         onClose={onClose}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
@@ -64,23 +54,16 @@ function Register({ open, onClose, onRegister }) {
           },
         }}
       >
-        <Fade in={open}>
+        <Fade in={openLogin}>
           <Box sx={style}>
             <form className="registerForm" onSubmit={formik.handleSubmit}>
-              <p>Registration</p>
-              <div>
-                <TextField id="outlined-basic" label="Name" variant="outlined" name='name'
-                  onChange={formik.handleChange} />
-                {formik.errors.name && formik.touched.name && (
-                  <p>{formik.errors.name}</p>
-                )}  
-              </div>
+              <p>Login</p>
               <div>
                 <TextField id="outlined-basic" label="Email" variant="outlined" name='email'
                   onChange={formik.handleChange} />
                 {formik.errors.email && formik.touched.email && (
                   <p>{formik.errors.email}</p>
-                )}  
+                )}
               </div>
               <div>
                 <TextField id="outlined-basic" label="Password" type="password" variant="outlined" name='password'
@@ -89,15 +72,7 @@ function Register({ open, onClose, onRegister }) {
                   <p>{formik.errors.password}</p>
                 )}
               </div>
-              <div>
-                <TextField id="outlined-basic" label="Confirm Password" type="password" variant="outlined" name='confirm_password'
-                  onChange={formik.handleChange} />
-                {formik.errors.confirm_password &&
-                  formik.touched.confirm_password && (
-                    <p>{formik.errors.confirm_password}</p>
-                  )}
-              </div>
-              <Button type="submit" text="Register" />
+              <Button type="submit" text="Login" />
             </form>
           </Box>
         </Fade>
@@ -107,4 +82,4 @@ function Register({ open, onClose, onRegister }) {
   )
 }
 
-export default Register
+export default LogIn

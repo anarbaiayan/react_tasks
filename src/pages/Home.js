@@ -1,8 +1,8 @@
 import React from 'react'
-import Welcome from '../components/Welcome'
-import Services from '../components/Services'
-import About from '../components/About'
-import Footer from '../components/Footer'
+import Welcome from '../components/Home/Welcome'
+import Services from '../components/Home/Services'
+import About from '../components/Home/About'
+import Footer from '../components/Home/Footer'
 
 const Home = () => {
   return (

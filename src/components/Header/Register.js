@@ -1,6 +1,6 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
-import Button from "../UI/myButton"
+import Button from "../../UI/myButton"
 import Modal from '@mui/material/Modal';
 import Backdrop from '@mui/material/Backdrop';
 import Fade from '@mui/material/Fade';
@@ -8,24 +8,37 @@ import Box from '@mui/material/Box';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-function LogIn({openLogin, onClose, onLogin}) {
+function Register({ open, onClose, onRegister, userData }) {
   const formik = useFormik({
     initialValues: {
+      id: "",
       email: "",
-      password: ""
+      password: "",
+      confirm_password: "",
+      role: "user",
+      ban: false
     },
     validationSchema: Yup.object({
+      name: Yup.string()
+        .min(2, "Minimum 2 characters")
+        .max(15, "Maximum 15 characters")
+        .required("Required!"),
       email: Yup.string()
         .email("Invalid email format")
         .required("Required!"),
       password: Yup.string()
         .min(8, "Minimum 8 characters")
+        .required("Required!"),
+      confirm_password: Yup.string()
+        .oneOf([Yup.ref("password")], "Password's not match")
         .required("Required!")
     }),
     onSubmit: values => {
-      onLogin(values);
+      values.id = userData.length + 1
+      onRegister(values);
     }
   });
+
 
   const style = {
     position: 'absolute',
@@ -44,7 +57,7 @@ function LogIn({openLogin, onClose, onLogin}) {
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        open={openLogin}
+        open={open}
         onClose={onClose}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
@@ -54,16 +67,23 @@ function LogIn({openLogin, onClose, onLogin}) {
           },
         }}
       >
-        <Fade in={openLogin}>
+        <Fade in={open}>
           <Box sx={style}>
             <form className="registerForm" onSubmit={formik.handleSubmit}>
-              <p>Login</p>
+              <p>Registration</p>
+              <div>
+                <TextField id="outlined-basic" label="Name" variant="outlined" name='name'
+                  onChange={formik.handleChange} />
+                {formik.errors.name && formik.touched.name && (
+                  <p>{formik.errors.name}</p>
+                )}  
+              </div>
               <div>
                 <TextField id="outlined-basic" label="Email" variant="outlined" name='email'
                   onChange={formik.handleChange} />
                 {formik.errors.email && formik.touched.email && (
                   <p>{formik.errors.email}</p>
-                )}
+                )}  
               </div>
               <div>
                 <TextField id="outlined-basic" label="Password" type="password" variant="outlined" name='password'
@@ -72,7 +92,15 @@ function LogIn({openLogin, onClose, onLogin}) {
                   <p>{formik.errors.password}</p>
                 )}
               </div>
-              <Button type="submit" text="Login" />
+              <div>
+                <TextField id="outlined-basic" label="Confirm Password" type="password" variant="outlined" name='confirm_password'
+                  onChange={formik.handleChange} />
+                {formik.errors.confirm_password &&
+                  formik.touched.confirm_password && (
+                    <p>{formik.errors.confirm_password}</p>
+                  )}
+              </div>
+              <Button type="submit" text="Register" />
             </form>
           </Box>
         </Fade>
@@ -82,4 +110,4 @@ function LogIn({openLogin, onClose, onLogin}) {
   )
 }
 
-export default LogIn
+export default Register

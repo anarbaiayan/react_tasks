@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import TextField from '@mui/material/TextField';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import MyButton from "../UI/myButton";
+import MyButton from "../../UI/myButton";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { AnimatePresence } from "motion/react";

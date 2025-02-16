@@ -13,6 +13,7 @@ const UserInfo = () => {
       <div>
         <p>Email: {currentUser.email}</p>
         <p>Name: {currentUser.name}</p>
+        <p>Role: {currentUser.role}</p>
       </div>
 
     </div>

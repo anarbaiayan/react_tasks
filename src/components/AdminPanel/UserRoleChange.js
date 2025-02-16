@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import TextField from '@mui/material/TextField';
+import { useOutletContext } from 'react-router-dom'
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import MyButton from "../UI/myButton";
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import MyButton from "../../UI/myButton";
+import TextField from '@mui/material/TextField';
 
 const FixedWidthCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -15,34 +15,25 @@ const FixedWidthCell = styled(TableCell)(({ theme }) => ({
     color: theme.palette.common.white,
   },
   width: "300px",
-  height: "40px",
+  height: "50px",
   whiteSpace: "nowrap",
   overflow: "hidden",
   textOverflow: "ellipsis",
 }));
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-function Users({ users, onDelete, onEdit }) {
+const UserRoleChange = () => {
+  const { userData, editUser } = useOutletContext();
 
   const [editingId, setEditingId] = useState(null);
-  const [editingUser, setEditingUser] = useState({ name: "", email: "" })
+  const [editingUser, setEditingUser] = useState({ role: ""})
 
   const startEditing = (user) => {
     setEditingId(user.id)
-    setEditingUser({ name: user.name, email: user.email })
+    setEditingUser({ role: user.role})
   }
 
   const saveChanges = (id) => {
-    onEdit({ id, ...editingUser })
+    editUser({ id, ...editingUser })
     setEditingId(null)
   }
 
@@ -51,39 +42,37 @@ function Users({ users, onDelete, onEdit }) {
       <Table sx={{ minWidth: 900 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Num</StyledTableCell>
+            <FixedWidthCell>Num</FixedWidthCell>
             <FixedWidthCell align="right">Name</FixedWidthCell>
             <FixedWidthCell align="right">Email</FixedWidthCell>
+            <FixedWidthCell align="right">Role</FixedWidthCell>
             <FixedWidthCell align="right">Edit</FixedWidthCell>
-            <StyledTableCell align="right">Delete</StyledTableCell>
           </TableRow>
         </TableHead>
 
         <TableBody className="user_table">
-          {users.map((user, index) => (
+          {userData.map((user, index) => (
             <TableRow key={user.id} className="user_table_row">
-              <TableCell className="user_table_elem" component="th">{index + 1}</TableCell>
+              <FixedWidthCell className="user_table_elem" component="th">{index + 1}</FixedWidthCell>
               <FixedWidthCell align="right">
-                {editingId === user.id ? (
-                  <TextField size="small" id="outlined-required" type="text" value={editingUser.name} onChange={(e) => setEditingUser({ ...editingUser, name: e.target.value })} />
-                ) : <div>{user.name}</div>}
+                <div>{user.name}</div>
+              </FixedWidthCell>
+              <FixedWidthCell align="right">
+                <div>{user.email}</div>
               </FixedWidthCell>
               <FixedWidthCell align="right">
                 {editingId === user.id ? (
-                  <TextField size="small" id="outlined-required" type="text" value={editingUser.email} onChange={(e) => setEditingUser({ ...editingUser, email: e.target.value })} />
-                ) : <div>{user.email}</div>}
+                  <TextField size="small" id="outlined-required" type="text" value={editingUser.role} onChange={(e) => setEditingUser({ ...editingUser, role: e.target.value })} />
+                ) : <div>{user.role}</div>}
               </FixedWidthCell>
-              <TableCell align="right">
+              <FixedWidthCell align="right">
                 {editingId === user.id ? (
                   <MyButton bgcolor="green" text="Save" onClick={() => saveChanges(user.id)} />
                 ) : (
                   <MyButton text="Edit" onClick={() => startEditing(user)} />
                 )}
 
-              </TableCell>
-              <TableCell align="right">
-                <MyButton bgcolor="red" icon={<DeleteOutlineIcon sx={{ size: 'small' }} />} fontSize="16px" onClick={() => onDelete(user.id)} />
-              </TableCell>
+              </FixedWidthCell>
             </TableRow>
           ))}
         </TableBody>
@@ -93,4 +82,4 @@ function Users({ users, onDelete, onEdit }) {
   )
 }
 
-export default Users
+export default UserRoleChange
