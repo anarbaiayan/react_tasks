@@ -61,7 +61,7 @@ function Users({ users, onDelete, onEdit }) {
 
         <TableBody className="user_table">
           {users.map((user, index) => (
-            <TableRow key={user.id} className="user_table_row">
+            <TableRow key={user.id || index} className="user_table_row">
               <TableCell className="user_table_elem" component="th">{index + 1}</TableCell>
               <FixedWidthCell align="right">
                 {editingId === user.id ? (
@@ -82,7 +82,20 @@ function Users({ users, onDelete, onEdit }) {
 
               </TableCell>
               <TableCell align="right">
-                <MyButton bgcolor="red" icon={<DeleteOutlineIcon sx={{ size: 'small' }} />} fontSize="16px" onClick={() => onDelete(user.id)} />
+                <MyButton
+                  bgcolor="red"
+                  icon={<DeleteOutlineIcon sx={{ size: 'small' }} />}
+                  fontSize="16px"
+                  onClick={() => {
+                    const userId = user.id || user._id; // ✅ Используем _id, если id отсутствует
+                    if (!userId) {
+                      console.error("❌ Error: User has no valid ID!");
+                      return;
+                    }
+                    onDelete(userId);
+                  }}
+                />
+
               </TableCell>
             </TableRow>
           ))}

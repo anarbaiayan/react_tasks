@@ -37,10 +37,14 @@ function Header() {
   const handleLogin = async (user) => {
     const role = await store.login(user.email, user.password);
     handleCloseLogin();
+    const lastPage = localStorage.getItem("lastPage");
 
     if (!store.isAuth) {
       toast.error("You are banned");
       navigate("/");
+    } else if (lastPage !== '/') {
+      localStorage.removeItem("lastPage");
+      navigate(lastPage);
     } else if (role === "admin") {
       toast.success("Welcome back admin");
       navigate("/adminPanel");

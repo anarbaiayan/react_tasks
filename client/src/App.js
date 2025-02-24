@@ -1,6 +1,6 @@
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
-import UserTable from "./pages/UserTable";
+import UserTable from "./pages/UserTable.tsx";
 import RootLayout from "./layout/RootLayout";
 import ProfileLayout from "./layout/ProfileLayout";
 import UserInfo from "./components/Profile/UserInfo";
