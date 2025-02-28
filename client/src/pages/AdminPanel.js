@@ -3,7 +3,7 @@ import { SidebarData } from "../components/AdminPanel/SidebarData"
 import { useNavigate } from 'react-router-dom';
 
 const AdminPanel = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <div>

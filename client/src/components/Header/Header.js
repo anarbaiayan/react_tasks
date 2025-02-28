@@ -1,7 +1,7 @@
 import Button from "../../UI/myButton"
 import Register from "./Register"
 import LogIn from "./LogIn"
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Context } from "../../index.tsx";
 import { observer } from 'mobx-react-lite'
@@ -19,45 +19,42 @@ function Header() {
   const handleOpenLogin = () => setOpenLogin(true);
   const handleCloseLogin = () => setOpenLogin(false);
 
+  const [userRole, setUserRole] = useState("");
+
+  useEffect(() => {
+    if (store.isAuth && userRole) {
+      const lastPage = localStorage.getItem("lastPage");
+      if (lastPage) {
+        localStorage.removeItem("lastPage");
+        navigate(lastPage);
+      } else if (userRole === "admin") {
+        navigate("/adminPanel");
+        toast.success("Welcome admin");
+      } else {
+        navigate("/profile");
+        toast.success("Welcome user");
+      }
+    }
+  }, [store.isAuth, userRole, navigate]);
+
   const handleRegister = async (user) => {
     const role = await store.registration(user.name, user.email, user.password);
+    setUserRole(role)
     handleClose();
-    if (!store.isAuth) {
-      navigate('/')
-      toast.error('You are unauthorized')
-    } else if (role === "admin") {
-      navigate("/adminPanel");
-      toast.success('Welcome admin')
-    } else if (role === "user") {
-      navigate("/profile");
-      toast.success("Welcome new user")
-    }
   };
 
   const handleLogin = async (user) => {
     const role = await store.login(user.email, user.password);
+    setUserRole(role)
     handleCloseLogin();
-    const lastPage = localStorage.getItem("lastPage");
-
     if (!store.isAuth) {
       toast.error("You are banned");
       navigate("/");
-    } else if (lastPage !== '/') {
-      localStorage.removeItem("lastPage");
-      navigate(lastPage);
-    } else if (role === "admin") {
-      toast.success("Welcome back admin");
-      navigate("/adminPanel");
-    } else {
-      toast.success("Welcome back user");
-      navigate("/profile");
     }
   };
 
   const handleLogout = async () => {
     await store.logout()
-    navigate('/')
-    toast.success('Logged out')
   }
 
 

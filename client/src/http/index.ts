@@ -32,7 +32,7 @@ $api.interceptors.response.use(
       } catch (e) {
         console.log("🔵 Saving lastPage:", window.location.pathname);
         localStorage.setItem("lastPage", window.location.pathname);
-
+        localStorage.setItem("showToast", "true"); 
         localStorage.removeItem("token");
         window.location.href = "/";
       }

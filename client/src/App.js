@@ -14,15 +14,33 @@ import { useContext, useEffect } from "react";
 import { Context } from "./index.tsx";
 import { observer } from 'mobx-react-lite'
 import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LoadingScreen from "./components/LoadingScreen/LoadingScreen.js";
 
 function App() {
   const { store } = useContext(Context)
   useEffect(() => {
     if (localStorage.getItem('token')) {
       store.checkAuth()
+    }else {
+      store.setLoading(false)
     }
   }, [store])
+
+  useEffect(() => {
+    if (localStorage.getItem("showToast") === "true") {
+      setTimeout(() => {
+        toast.info("Your session expired, Log in again");
+      }, 500);
+
+      localStorage.removeItem("showToast");
+    }
+  }, []);
+
+  if (store.isLoading) {
+    return <LoadingScreen />;
+  }
 
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -32,7 +50,7 @@ function App() {
           <Route path="info" element={<UserInfo />} />
         </Route>
         <Route path="userTable" element={<UserTable />} />
-        <Route path="adminPanel" element={<AdminPanelLayout />}>
+        <Route path="adminPanel" element={store.user.role === "admin" ? <AdminPanelLayout /> : <NotFound />}>
           <Route path="" element={<UserRoleChange />} />
           <Route path="profileEditing" element={<UserProfileEdit />} />
           <Route path="userBan" element={<UserBan />} />

@@ -11,7 +11,7 @@ const UserTable = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, [users]); 
+  }, []); 
 
   async function fetchUsers() {
     try {
