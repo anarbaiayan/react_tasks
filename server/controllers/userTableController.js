@@ -55,7 +55,15 @@ class userTableController {
     }
   }
 
-
+  async deleteUsers(req, res, next) {
+    try {
+      const { ids } = req.body;
+      const result = await userTableService.deleteUsers(ids);
+      return res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
 };
 
 module.exports = new userTableController();

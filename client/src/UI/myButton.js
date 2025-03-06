@@ -1,22 +1,28 @@
-import * as motion from "motion/react-client"
+import * as motion from "motion/react-client";
 
-function MyButton({ bgcolor, color, text, onClick, icon, fontSize, type, padding, margin, className, borderRadius }) {
+function MyButton({ bgcolor, color, text, onClick, icon, fontSize, type, padding, margin, className, borderRadius, disabled }) {
   const buttonStyles = {
-    backgroundColor: bgcolor || 'blue',
-    color: color || 'white',
-    border: 'none',
-    borderRadius: borderRadius || '5px',
-    padding: padding || '10px 20px',
+    backgroundColor: bgcolor || "blue",
+    color: color || "white",
+    border: "none",
+    borderRadius: borderRadius || "5px",
+    padding: padding || "10px 20px",
     margin: margin || "0",
-    cursor: 'pointer',
-    fontSize: fontSize || '14px',
+    cursor: disabled ? "not-allowed" : "pointer", 
+    fontSize: fontSize || "14px",
+    opacity: disabled ? 0.5 : 1, 
   };
 
   return (
     <motion.button
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.95 }}
-      type={type} onClick={onClick} style={buttonStyles} className={className}>
+      whileHover={!disabled ? { scale: 1.1 } : {}} 
+      whileTap={!disabled ? { scale: 0.95 } : {}} 
+      type={type}
+      onClick={!disabled ? onClick : undefined} 
+      style={buttonStyles}
+      className={className}
+      disabled={disabled} 
+    >
       {icon && icon} {text}
     </motion.button>
   );

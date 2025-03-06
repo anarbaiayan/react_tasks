@@ -18,5 +18,6 @@ router.get("/userTable/:id", authMiddleware, userTableController.getUserById);
 router.post("/userTable", authMiddleware, userTableController.addUser);
 router.put("/userTable/:id", authMiddleware, userTableController.updateUser);
 router.delete("/userTable/:id", authMiddleware, userTableController.deleteUser);
+router.delete("/userTable", authMiddleware, userTableController.deleteUsers);
 
 module.exports = router

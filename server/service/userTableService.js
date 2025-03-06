@@ -4,6 +4,7 @@ const ApiError = require('../exeptions/apiError')
 class userTableService {
   async getAllUsers() {
     const users = await UserTableModel.find()
+    console.log(users)
     return users
   }
 
@@ -31,6 +32,19 @@ class userTableService {
   async deleteUser(id) {
     const deletedUser = await UserTableModel.findByIdAndDelete(id);
     return deletedUser;
+  }
+
+  async deleteUsers(ids) {
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      throw new ApiError("Invalid request. Provide an array of user IDs.");
+    }
+
+    const result = await UserTableModel.deleteMany({ _id: { $in: ids } });
+    if (result.deletedCount === 0) {
+      throw new ApiError("No users found for the provided IDs.");
+    }
+
+    return { message: `${result.deletedCount} users deleted successfully` };
   }
 }
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AddUser from "../components/UserTable/AddUser";
-import Users from "../components/UserTable/Users";
+import Users from "../components/UserTable/Users.tsx";
 import UserTableService from "../services/UserTableService.ts";
 import { IUserTable } from "../models/IUserTable.ts";
 import { toast } from "react-toastify";
@@ -11,22 +11,21 @@ const UserTable = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, []); 
+  }, []);
 
   async function fetchUsers() {
     try {
       const response = await UserTableService.fetchUsers();
       const usersData = response.data.map((user: any) => ({
-        id: user.id || user._id,
+        id: user._id,
         name: user.name,
         email: user.email,
       }));
-
       setUsers(usersData);
     } catch (error) {
-      console.error("Error fetching users:", error);
     }
   }
+
 
 
   async function addUser(user: IUserTable) {
@@ -42,16 +41,42 @@ const UserTable = () => {
 
   async function deleteUser(id: string) {
     try {
-      await UserTableService.deleteUser(id);
+      setUsers((prevUsers) => {
+        const updatedUsers = prevUsers.filter((user) => user.id !== id);
+        return updatedUsers;
+      });
 
-      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
-      toast.success('User deleted successfully')
+      const response = await UserTableService.deleteUser(id);
+      if (response && response.status === 200) {
+        toast.success("User deleted successfully");
+      } else {
+        toast.error("Failed to delete user");
+        fetchUsers();
+      }
     } catch (error) {
-      console.error("❌ Error deleting user:", error);
-      toast.error('Error')
+      toast.error("Error");
+      fetchUsers();
     }
   }
 
+  async function deleteUsers(ids: string[]) {
+    if (ids.length === 0) return;
+
+    try {
+      setUsers((prevUsers) => prevUsers.filter((user) => !ids.includes(user.id)));
+      const response = await UserTableService.deleteUsers(ids);
+      if (response && response.status === 200) {
+        toast.success(`Deleted ${ids.length} users successfully`);
+      } else {
+        toast.error("Failed to delete some users");
+        fetchUsers();
+      }
+    } catch (error) {
+      console.error("Error deleting users:", error);
+      toast.error("Error deleting users");
+      fetchUsers();
+    }
+  }
 
 
   async function editUser(updatedUser: IUserTable) {
@@ -66,14 +91,13 @@ const UserTable = () => {
         updatedUser.email
       );
 
-      setUsers(users.map((user) => (user.id === updatedUser.id ? response.data : user)));
+      setUsers(users.map((user) => (user.id === updatedUser.id ? {...response.data, id: response.data?._id} : user)));
       toast.success('User edited successfully')
     } catch (error) {
       console.error("Error updating user:", error);
       toast.error('Error')
     }
   }
-
 
 
   return (
@@ -83,7 +107,7 @@ const UserTable = () => {
       </div>
 
       <main>
-        <Users users={users} onDelete={deleteUser} onEdit={editUser} />
+        <Users users={users} setUsers={setUsers} onDelete={deleteUser} onDeleteUsers={deleteUsers} onEdit={editUser} />
       </main>
     </>
   );

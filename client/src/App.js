@@ -63,8 +63,8 @@ function App() {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={2000} hideProgressBar={false} />
       <RouterProvider router={router} />
+      <ToastContainer position="top-right" autoClose={2000} hideProgressBar={false} />
     </>
   );
 }
