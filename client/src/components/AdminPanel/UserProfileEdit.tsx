@@ -6,7 +6,7 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
-import MyButton from "../../UI/myButton";
+import MyButton from "../../UI/myButton.tsx";
 import UserService from "../../services/UserService.ts";
 import { IUser } from "../../models/IUser.ts";
 import { toast } from "react-toastify";
@@ -118,7 +118,7 @@ const UserRoleChange = () => {
                   borderRadius="30px"
                   bgcolor="orange"
                   text="Save"
-                  onClick={() => updateUser(user.id)} color={undefined} icon={undefined} fontSize={undefined} type={undefined} padding={undefined} margin={undefined}                />
+                  onClick={() => updateUser(user.id)} />
               </FixedWidthCell>
             </TableRow>
           ))}

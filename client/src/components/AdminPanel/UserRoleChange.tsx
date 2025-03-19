@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import MyButton from "../../UI/myButton";
+import MyButton from "../../UI/myButton.tsx";
 import UserService from "../../services/UserService.ts";
 import {IUser} from '../../models/IUser.ts'
 import { toast } from "react-toastify";

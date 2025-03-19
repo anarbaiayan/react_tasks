@@ -4,7 +4,6 @@ const ApiError = require('../exeptions/apiError')
 class userTableService {
   async getAllUsers() {
     const users = await UserTableModel.find()
-    console.log(users)
     return users
   }
 

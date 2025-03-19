@@ -1,5 +1,5 @@
 import React from 'react'
-import Button from '../../UI/myButton'
+import Button from '../../UI/myButton.tsx'
 import { useNavigate } from 'react-router-dom'
 
 const NotFound = () => {

@@ -1,4 +1,4 @@
-import Button from "../../UI/myButton"
+import Button from "../../UI/myButton.tsx"
 import Register from "./Register"
 import LogIn from "./LogIn"
 import React, { useContext, useState, useEffect } from "react";

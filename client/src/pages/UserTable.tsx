@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import AddUser from "../components/UserTable/AddUser";
+import AddUser from "../components/UserTable/AddUser.tsx";
 import Users from "../components/UserTable/Users.tsx";
 import UserTableService from "../services/UserTableService.ts";
 import { IUserTable } from "../models/IUserTable.ts";
@@ -7,6 +7,11 @@ import { toast } from "react-toastify";
 
 const UserTable = () => {
   const [users, setUsers] = useState<IUserTable[]>([]);
+  const [choose, setChoose] = useState<boolean>(false)
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
 
   useEffect(() => {
@@ -40,6 +45,7 @@ const UserTable = () => {
   }
 
   async function deleteUser(id: string) {
+    handleClose()
     try {
       setUsers((prevUsers) => {
         const updatedUsers = prevUsers.filter((user) => user.id !== id);
@@ -103,11 +109,11 @@ const UserTable = () => {
   return (
     <>
       <div>
-        <AddUser onAdd={addUser} />
+        <AddUser onAdd={addUser} choose={choose} setChoose={setChoose} />
       </div>
 
       <main>
-        <Users users={users} setUsers={setUsers} onDelete={deleteUser} onDeleteUsers={deleteUsers} onEdit={editUser} />
+        <Users open={open} setOpen={setOpen} handleClose={handleClose} handleOpen={handleOpen} users={users} setUsers={setUsers} onDelete={deleteUser} onDeleteUsers={deleteUsers} onEdit={editUser} choose={choose} setChoose={setChoose} />
       </main>
     </>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from '../UI/myButton';
+import Button from '../UI/myButton.tsx';
 
 const Profile = () => {
   const navigate = useNavigate();

@@ -5,7 +5,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import MyButton from "../../UI/myButton";
+import MyButton from "../../UI/myButton.tsx";
 import UserService from "../../services/UserService.ts";
 import { IUser } from "../../models/IUser.ts";
 import { toast } from "react-toastify";
@@ -97,7 +97,7 @@ const UserBan = () => {
                   fontSize="16px"
                   onClick={() => {
                     toggleBan(user.id, user.banned);
-                  }} color={undefined} icon={undefined} type={undefined} padding={undefined} margin={undefined} className={undefined} borderRadius={undefined} />
+                  }} />
               </FixedWidthCell>
 
             </TableRow>

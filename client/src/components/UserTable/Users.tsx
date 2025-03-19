@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
@@ -7,10 +7,11 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Checkbox from "@mui/material/Checkbox";
-import MyButton from "../../UI/myButton";
+import MyButton from "../../UI/myButton.tsx";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { IUserTable } from "../../models/IUserTable";
 import { toast } from "react-toastify";
+import DeleteConfirmModal from "./DeleteConfirmModal.tsx";
 
 const FixedWidthCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -34,7 +35,9 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-function Users({ users, setUsers, onDelete, onEdit, onDeleteUsers }) {
+function Users({ users, setUsers, onDelete, onEdit, onDeleteUsers, choose, setChoose, open, setOpen, handleOpen, handleClose }) {
+  const [id, setId] = useState<string>()
+
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingUser, setEditingUser] = useState({ name: "", email: "" });
   const [selectedUsers, setSelectedUsers] = useState<Set<string>>(new Set());
@@ -65,10 +68,6 @@ function Users({ users, setUsers, onDelete, onEdit, onDeleteUsers }) {
   };
 
   const toggleSelectUser = (id: string) => {
-    console.log(id)
-    if(!id){
-      return
-    }
     setSelectedUsers((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(id)) {
@@ -82,48 +81,68 @@ function Users({ users, setUsers, onDelete, onEdit, onDeleteUsers }) {
 
   const deleteSelectedUsers = async () => {
     if (selectedUsers.size === 0) return;
-  
+
     try {
       await onDeleteUsers([...selectedUsers]);
       setUsers((prevUsers) => prevUsers.filter((user) => !selectedUsers.has(user._id)));
       setSelectedUsers(new Set());
+      setChoose(false)
+      handleClose()
     } catch (error) {
       console.error("Error deleting selected users:", error);
       toast.error("Failed to delete some users");
     }
   };
-  
-  
+
+  const saveUserId = (userId: string) => {
+    setId(userId)
+    handleOpen()
+  }
 
   return (
     <div>
-      <MyButton
-        text="Delete Selected"
-        bgcolor="red"
-        onClick={deleteSelectedUsers}
-        disabled={selectedUsers.size === 0} color={undefined} icon={undefined} fontSize={undefined} type={undefined} padding={undefined} margin={undefined} className={undefined} borderRadius={undefined}      />
+      {
+        choose ? <MyButton
+          bgcolor="red"
+          onClick={handleOpen}
+          disabled={selectedUsers.size === 0}
+          icon={<DeleteOutlineIcon sx={{ size: "small" }} />}
+          borderRadius='50%'
+          padding="20px"
+          className="multi_delete"
+        />
+          : ''
+      }
+      <DeleteConfirmModal open={open} handleClose={handleClose} deleteSelectedUsers={deleteSelectedUsers} onDelete={onDelete} id={id} choose={choose} />
 
       <Table sx={{ minWidth: 900 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Select</StyledTableCell>
+            {
+              choose ? <StyledTableCell>Select</StyledTableCell> : ''
+            }
             <StyledTableCell>Num</StyledTableCell>
             <FixedWidthCell align="right">Name</FixedWidthCell>
             <FixedWidthCell align="right">Email</FixedWidthCell>
             <FixedWidthCell align="right">Edit</FixedWidthCell>
-            <StyledTableCell align="right">Delete</StyledTableCell>
+            {
+              choose ? '' : <StyledTableCell align="right">Delete</StyledTableCell>
+            }
           </TableRow>
         </TableHead>
 
         <TableBody className="user_table">
           {users.map((user: IUserTable, index: number) => (
             <TableRow key={user.id || index} className="user_table_row">
-              <TableCell>
-                <Checkbox
-                  checked={selectedUsers.has(user.id)}
-                  onChange={() => toggleSelectUser(user.id)}
-                />
-              </TableCell>
+              {choose ?
+                <TableCell>
+                  <Checkbox
+                    checked={selectedUsers.has(user.id)}
+                    onChange={() => toggleSelectUser(user.id)} />
+                </TableCell>
+                : ''
+              }
+
               <TableCell className="user_table_elem" component="th">
                 {index + 1}
               </TableCell>
@@ -153,18 +172,22 @@ function Users({ users, setUsers, onDelete, onEdit, onDeleteUsers }) {
               </FixedWidthCell>
               <TableCell align="right">
                 {editingId === user.id ? (
-                  <MyButton bgcolor="green" text="Save" onClick={() => saveChanges(user.id)} color={undefined} icon={undefined} fontSize={undefined} type={undefined} padding={undefined} margin={undefined} className={undefined} borderRadius={undefined} disabled={undefined} />
+                  <MyButton bgcolor="green" text="Save" onClick={() => saveChanges(user.id)} />
                 ) : (
-                  <MyButton text="Edit" onClick={() => startEditing(user)} bgcolor={undefined} color={undefined} icon={undefined} fontSize={undefined} type={undefined} padding={undefined} margin={undefined} className={undefined} borderRadius={undefined} disabled={undefined} />
+                  <MyButton text="Edit" onClick={() => startEditing(user)} />
                 )}
               </TableCell>
-              <TableCell align="right">
-                <MyButton
-                  bgcolor="red"
-                  icon={<DeleteOutlineIcon sx={{ size: "small" }} />}
-                  fontSize="16px"
-                  onClick={() => onDelete(user.id)} color={undefined} text={undefined} type={undefined} padding={undefined} margin={undefined} className={undefined} borderRadius={undefined} disabled={undefined}                />
-              </TableCell>
+              {
+                choose ? '' :
+                  <TableCell align="right">
+                    <MyButton
+                      bgcolor="red"
+                      icon={<DeleteOutlineIcon sx={{ size: "small" }} />}
+                      fontSize="16px"
+                      onClick={() => saveUserId(user.id)} />
+                  </TableCell>
+              }
+
             </TableRow>
           ))}
         </TableBody>

@@ -30,7 +30,6 @@ $api.interceptors.response.use(
 
         return $api(originalRequest);
       } catch (e) {
-        console.log("🔵 Saving lastPage:", window.location.pathname);
         localStorage.setItem("lastPage", window.location.pathname);
         localStorage.setItem("showToast", "true"); 
         localStorage.removeItem("token");
