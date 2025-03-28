@@ -12,7 +12,7 @@ import { IUser } from "../../models/IUser.ts";
 import { toast } from "react-toastify";
 
 const FixedWidthCell = styled(TableCell)(() => ({
-  width: "300px",
+  width: "400px",
   height: "50px",
   whiteSpace: "nowrap",
   overflow: "hidden",

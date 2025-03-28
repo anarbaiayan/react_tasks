@@ -16,7 +16,7 @@ const AllUsers = () => {
       const response = await UserService.fetchUsers();
       setUsers(response.data);
     } catch (error) {
-      console.error("Ошибка при загрузке пользователей:", error);
+      console.error("Error fetching users:", error);
     }
   }
 
