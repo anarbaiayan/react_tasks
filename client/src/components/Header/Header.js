@@ -48,7 +48,7 @@ function Header() {
     setUserRole(role)
     handleCloseLogin();
     if (!store.isAuth) {
-      toast.error("You are banned");
+      toast.error("Error");
       navigate("/");
     }
   };

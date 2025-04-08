@@ -29,7 +29,7 @@ class UserService {
       throw ApiError.BadRequest('There is no user with this email')
     }
     if (user.banned) {
-      throw ApiError.BadRequest('You are banned')
+      throw ApiError.BadRequest('Banned')
     }
     const isMatch = await bcrypt.compare(password, user.password)
     if (!isMatch) {
